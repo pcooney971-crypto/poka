@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calisto's Catering</title>
+<meta name="description" content="Catering platters from Calisto's Deli in Boston's South End. Build 10-sandwich platters or combo platters with Torres chips and drinks, for pickup or delivery.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+/* ------------------------------------------------------------------
+   Calisto's brand tokens (from the Master Rebrand cheat sheet)
+   Wine #2B0816 · Silver #E5E4E2 · Linen #DCCFB9 · Charcoal #1A1A1A
+   Blush #E1BEBC · Sage Patina #A8C1A0
+   Fonts: Goudy Trojan → Cinzel (wordmark), LTC Goudy Text →
+   UnifrakturMaguntia (headlines), Rusch Proto Roman → EB Garamond (body)
+------------------------------------------------------------------- */
+:root{
+  --wine:#2B0816; --wine-2:#3d0d21; --wine-3:#561431;
+  --silver:#E5E4E2; --linen:#DCCFB9; --linen-2:#ebe2d3; --paper:#f6f1e8;
+  --charcoal:#1A1A1A; --blush:#E1BEBC; --sage:#A8C1A0; --sage-dk:#4d6a45;
+  --ink:#2B0816; --muted:#6b4e58; --line:#cdbda3; --error:#9b1c2c;
+  --radius:10px; --shadow:0 1px 2px rgba(43,8,22,.08),0 6px 24px rgba(43,8,22,.08);
+  --f-mark:'Cinzel',Georgia,serif; --f-black:'UnifrakturMaguntia','Cinzel',serif; --f-body:'EB Garamond',Georgia,'Times New Roman',serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img,svg{display:block}
+a{color:var(--wine-3)}
+button,input,select,textarea{font:inherit;color:inherit}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+:focus-visible{outline:3px solid var(--sage-dk);outline-offset:2px}
+
+/* ---------- Header ---------- */
+.site-head{background:var(--wine);color:var(--silver);border-bottom:1px solid #4a1a2e}
+.site-head .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:14px;padding-bottom:14px}
+.wordmark{font-family:var(--f-mark);font-weight:600;letter-spacing:.22em;font-size:22px;color:var(--silver);text-decoration:none}
+.wordmark small{display:block;font-family:var(--f-body);letter-spacing:.3em;font-size:10px;opacity:.7;margin-top:-2px}
+.nav{display:flex;gap:22px;font-size:15px;letter-spacing:.12em;text-transform:uppercase}
+.nav a{color:var(--silver);text-decoration:none;opacity:.8}
+.nav a[aria-current]{opacity:1;border-bottom:1px solid var(--silver)}
+@media (max-width:640px){.nav{display:none}}
+
+.wrap{max-width:1180px;margin:0 auto;padding-left:16px;padding-right:16px}
+
+/* ---------- Hero ---------- */
+.hero{background:radial-gradient(120% 90% at 50% 0%,var(--wine-3) 0%,var(--wine) 60%);color:var(--silver);text-align:center;padding:56px 0 64px;position:relative;overflow:hidden}
+.hero h1{font-family:var(--f-black);font-weight:400;font-size:clamp(56px,11vw,104px);line-height:1;margin:0;letter-spacing:.03em;color:var(--silver)}
+.hero .kicker{font-family:var(--f-mark);letter-spacing:.35em;font-size:13px;text-transform:uppercase;opacity:.8;margin:0 0 14px}
+.hero p.lede{max-width:620px;margin:18px auto 0;font-size:20px;color:#e9dfe0}
+.ornament{width:180px;height:18px;margin:18px auto 0;color:var(--silver);opacity:.7}
+.facts{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:28px auto 0;padding:0;list-style:none}
+.facts li{border:1px solid rgba(229,228,226,.35);border-radius:999px;padding:6px 16px;font-size:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:999px;padding:12px 26px;font-family:var(--f-mark);font-weight:600;font-size:14px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:background .15s,color .15s,border-color .15s,transform .05s}
+.btn:active{transform:translateY(1px)}
+.btn-silver{background:var(--silver);color:var(--wine)}
+.btn-silver:hover{background:#fff}
+.btn-wine{background:var(--wine);color:var(--silver)}
+.btn-wine:hover{background:var(--wine-3)}
+.btn-ghost{background:transparent;border-color:var(--wine);color:var(--wine)}
+.btn-ghost:hover{background:var(--wine);color:var(--silver)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.hero .btn{margin-top:30px}
+
+/* ---------- How it works ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:40px 0 8px;padding:0;list-style:none;counter-reset:s}
+.steps li{background:var(--linen-2);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 16px;counter-increment:s}
+.steps li::before{content:counter(s,upper-roman);font-family:var(--f-mark);font-weight:700;color:var(--wine-3);font-size:14px;letter-spacing:.2em;display:block;margin-bottom:4px}
+.steps b{display:block;font-size:19px}
+.steps span{font-size:16px;color:var(--muted)}
+@media (max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.steps{grid-template-columns:1fr}}
+
+/* ---------- Section headings ---------- */
+.sec-head{display:flex;align-items:baseline;gap:14px;margin:44px 0 6px}
+.sec-head .num{font-family:var(--f-mark);font-weight:700;color:var(--silver);background:var(--wine);border-radius:999px;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex:none;transform:translateY(-4px)}
+.sec-head h2{font-family:var(--f-black);font-weight:400;font-size:clamp(34px,5vw,44px);margin:0;line-height:1.05}
+.sec-sub{margin:0 0 18px 48px;color:var(--muted)}
+@media (max-width:480px){.sec-sub{margin-left:0}}
+
+/* ---------- Layout ---------- */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:32px;align-items:start;padding-bottom:80px;margin-top:12px}
+.summary{margin-top:44px}
+@media (max-width:980px){.summary{margin-top:32px}}
+.link-btn{background:none;border:0;padding:0;color:var(--wine-3);text-decoration:underline;cursor:pointer;font-weight:600}
+@media (max-width:980px){.layout{grid-template-columns:1fr}}
+
+/* ---------- Platter type picker ---------- */
+.types{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:640px){.types{grid-template-columns:1fr}}
+.type-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.type-card h3{font-family:var(--f-mark);font-size:19px;letter-spacing:.08em;margin:0;text-transform:uppercase}
+.type-card .price{font-size:34px;font-weight:600;margin:6px 0 0;line-height:1}
+.type-card .pp{font-size:15px;color:var(--muted)}
+.type-card ul{margin:12px 0 18px;padding-left:20px;font-size:17px}
+.type-card .btn{margin-top:auto;align-self:flex-start}
+.type-card.combo{background:var(--wine);color:var(--silver);border-color:var(--wine)}
+.type-card.combo .pp{color:#cfb8bf}
+.badge{display:inline-block;font-family:var(--f-mark);font-size:11px;letter-spacing:.16em;text-transform:uppercase;background:var(--sage);color:var(--charcoal);padding:3px 9px;border-radius:999px;margin-left:8px;vertical-align:middle}
+
+/* ---------- Platter builder ---------- */
+.platters{display:flex;flex-direction:column;gap:18px;margin-top:22px}
+.empty{border:1.5px dashed var(--line);border-radius:var(--radius);padding:26px;text-align:center;color:var(--muted);background:var(--linen-2)}
+.platter{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.platter.is-complete{border-color:var(--sage-dk)}
+.p-head{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--linen-2);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.p-head .title{font-family:var(--f-mark);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:16px}
+.p-head .ptype{font-size:15px;color:var(--muted)}
+.p-head .status{margin-left:auto;font-size:15px;font-weight:600;display:flex;align-items:center;gap:6px}
+.status.ok{color:var(--sage-dk)}
+.status.todo{color:var(--wine-3)}
+.p-tools{display:flex;gap:6px}
+.icon-btn{background:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:14px;cursor:pointer;color:var(--wine)}
+.icon-btn:hover{background:var(--wine);color:var(--silver);border-color:var(--wine)}
+.p-body{padding:16px 18px 20px}
+.p-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.seg{display:inline-flex;border:1px solid var(--wine);border-radius:999px;overflow:hidden}
+.seg button{background:none;border:0;padding:7px 16px;cursor:pointer;font-size:15px;color:var(--wine)}
+.seg button[aria-pressed="true"]{background:var(--wine);color:var(--silver)}
+.label-input{flex:1;min-width:180px}
+.label-input input{width:100%}
+
+.sub-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:18px 0 8px;padding-top:14px;border-top:1px solid var(--linen)}
+.sub-head:first-of-type{border-top:0;padding-top:0;margin-top:4px}
+.sub-head h4{margin:0;font-family:var(--f-mark);font-size:14px;letter-spacing:.14em;text-transform:uppercase}
+.meter{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600}
+.meter .bar{width:110px;height:6px;border-radius:999px;background:var(--linen);overflow:hidden}
+.meter .bar i{display:block;height:100%;background:var(--wine-3);transition:width .2s}
+.meter.full .bar i{background:var(--sage-dk)}
+.meter.full{color:var(--sage-dk)}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip-btn{background:var(--linen-2);border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:15px;cursor:pointer;color:var(--wine)}
+.chip-btn:hover{border-color:var(--wine)}
+
+.group-label{font-size:13px;font-family:var(--f-mark);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px}
+.items{list-style:none;margin:0;padding:0}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #efe7da}
+.item:last-child{border-bottom:0}
+.item .name{font-weight:600;font-size:18px}
+.item .desc{font-size:15px;color:var(--muted);line-height:1.35}
+.tag{display:inline-block;font-size:11px;font-family:var(--f-mark);letter-spacing:.1em;padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:2px;text-transform:uppercase}
+.tag.veg{background:var(--sage);color:var(--charcoal)}
+.tag.hot{background:var(--blush);color:var(--wine)}
+.tag.am{background:var(--linen);color:var(--wine)}
+.item.has .name{color:var(--wine-3)}
+
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:#fff}
+.stepper button{width:40px;height:40px;border:0;background:none;cursor:pointer;font-size:22px;line-height:1;color:var(--wine);border-radius:999px}
+.stepper button:hover:not([disabled]){background:var(--linen-2)}
+.stepper button[disabled]{opacity:.3;cursor:not-allowed}
+.stepper output{min-width:28px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.stepper.on{border-color:var(--wine);background:#fbf6f6}
+
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px 16px}
+.mini{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0}
+.mini .name{font-size:17px}
+
+.add-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+/* ---------- Form fields ---------- */
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.fields .full{grid-column:1/-1}
+@media (max-width:560px){.fields{grid-template-columns:1fr}}
+.field label,.field .lbl{display:block;font-weight:600;font-size:16px;margin-bottom:4px}
+.field .hint{font-size:14px;color:var(--muted);font-weight:400}
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=number],select,textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;font-size:17px;min-height:46px}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--wine-3);outline:2px solid rgba(86,20,49,.15)}
+.field.invalid input,.field.invalid select{border-color:var(--error);background:#fff7f7}
+.err{color:var(--error);font-size:14px;margin-top:4px;display:none}
+.field.invalid .err{display:block}
+
+.fulfil{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.fulfil label{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--line);border-radius:var(--radius);padding:14px 16px;cursor:pointer;background:#fff}
+.fulfil input{accent-color:var(--wine);width:20px;height:20px;margin-top:3px}
+.fulfil label:has(input:checked){border-color:var(--wine);background:#fbf6f6}
+.fulfil b{display:block;font-size:18px}
+.fulfil span{font-size:15px;color:var(--muted)}
+@media (max-width:480px){.fulfil{grid-template-columns:1fr}}
+
+.notice{display:flex;gap:12px;align-items:flex-start;border-radius:8px;padding:12px 14px;font-size:16px;margin-bottom:16px;background:var(--linen-2);border:1px solid var(--line)}
+.notice svg{flex:none;margin-top:3px}
+.notice.warn{background:#fbeeee;border-color:#e2b4b4}
+.checks{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.checks label{display:flex;gap:10px;align-items:flex-start;font-size:17px;cursor:pointer}
+.checks input{accent-color:var(--wine);width:18px;height:18px;margin-top:4px}
+
+/* ---------- Summary ---------- */
+.summary{position:sticky;top:16px;background:var(--wine);color:var(--silver);border-radius:var(--radius);padding:22px;box-shadow:0 10px 30px rgba(43,8,22,.25)}
+.summary h3{font-family:var(--f-black);font-weight:400;font-size:36px;margin:0 0 10px;line-height:1}
+.sum-lines{list-style:none;margin:0;padding:0;font-size:16px}
+.sum-lines li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid rgba(229,228,226,.15)}
+.sum-lines .detail{display:block;font-size:14px;color:#cfb8bf;line-height:1.35;margin-top:2px}
+.sum-empty{color:#cfb8bf;font-size:16px;padding:6px 0 10px}
+.totals{margin-top:10px;font-size:16px}
+.totals div{display:flex;justify-content:space-between;padding:3px 0}
+.totals .grand{font-size:22px;font-weight:700;border-top:1px solid rgba(229,228,226,.35);margin-top:8px;padding-top:10px}
+.totals .free{color:var(--sage)}
+.sum-meta{font-size:15px;color:#e9dfe0;margin:14px 0;display:grid;gap:4px}
+.sum-meta b{color:var(--silver)}
+.summary .btn{width:100%;margin-top:6px}
+.sum-note{font-size:13px;color:#cfb8bf;margin:10px 0 0;text-align:center}
+.missing{background:rgba(225,190,188,.14);border:1px solid rgba(225,190,188,.4);border-radius:8px;padding:10px 12px;margin-top:12px;font-size:15px}
+.missing ul{margin:4px 0 0;padding-left:18px}
+.missing a{color:var(--blush)}
+@media (max-width:980px){.summary{position:static}}
+
+/* mobile sticky bar */
+.mbar{display:none;position:fixed;left:0;right:0;bottom:0;background:var(--wine);color:var(--silver);padding:10px 16px calc(10px + env(safe-area-inset-bottom));z-index:20;box-shadow:0 -6px 20px rgba(0,0,0,.2);align-items:center;justify-content:space-between;gap:12px}
+.mbar .t{font-size:15px;line-height:1.2}
+.mbar .t b{font-size:20px;display:block}
+.mbar .btn{padding:10px 18px}
+@media (max-width:980px){.mbar{display:flex}body{padding-bottom:76px}}
+
+/* ---------- FAQ ---------- */
+.faq{background:var(--linen);padding:48px 0 64px}
+.faq h2{font-family:var(--f-black);font-weight:400;font-size:44px;margin:0 0 18px;text-align:center}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:760px){.faq-grid{grid-template-columns:1fr}}
+details{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px}
+summary{cursor:pointer;font-weight:600;font-size:18px}
+details p{margin:8px 0 0;color:var(--muted);font-size:17px}
+
+.site-foot{background:var(--charcoal);color:#bdb6b0;text-align:center;padding:30px 16px;font-size:15px}
+.site-foot .wordmark{font-size:18px;display:inline-block;margin-bottom:6px}
+
+/* ---------- Modal ---------- */
+.modal{position:fixed;inset:0;background:rgba(26,26,26,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.open{display:flex}
+.modal-box{background:var(--paper);border-radius:14px;max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.modal-box h2{font-family:var(--f-black);font-weight:400;font-size:44px;margin:0;line-height:1}
+.modal-box .ref{font-family:var(--f-mark);letter-spacing:.14em;color:var(--muted);font-size:14px;margin:8px 0 14px}
+.modal-box pre{white-space:pre-wrap;font-family:var(--f-body);font-size:16px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px;max-height:280px;overflow:auto}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+@media print{.site-head,.hero,.mbar,.faq,.site-foot,.steps,.types,.add-row{display:none!important}}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="#">CALISTO'S<small>DELI · SOUTH END</small></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#">Menu</a>
+      <a href="#" aria-current="page">Catering</a>
+      <a href="#">Visit</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="kicker">Calisto's · 682A Tremont St</p>
+    <h1>Catering</h1>
+    <svg class="ornament" viewBox="0 0 180 18" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M0 9h70M110 9h70"/><path d="M90 2l7 7-7 7-7-7z"/><circle cx="76" cy="9" r="2"/><circle cx="104" cy="9" r="2"/></svg>
+    <p class="lede">Our signature sandwiches, built for the whole table. Pick your platters, mix the sandwiches however you like, and we'll have it ready for pickup or bring it to you.</p>
+    <ul class="facts">
+      <li>10 sandwiches per platter</li>
+      <li>Platters from $135</li>
+      <li>Pickup or delivery</li>
+      <li>24 hr notice · 48 hr for 30+ sandwiches</li>
+    </ul>
+    <a class="btn btn-silver" href="#build">Start your order</a>
+  </div>
+</section>
+
+<main class="wrap">
+  <ol class="steps" aria-label="How catering works">
+    <li><b>Choose platters</b><span>Sandwich platter or combo with chips &amp; drinks.</span></li>
+    <li><b>Pick the sandwiches</b><span>Any mix of 10 per platter, or one tap for a Chef's Mix.</span></li>
+    <li><b>Pickup or delivery</b><span>Choose a date and time that works.</span></li>
+    <li><b>Send your order</b><span>We confirm and send your invoice.</span></li>
+  </ol>
+
+  <div class="layout">
+    <form id="order" novalidate>
+      <!-- STEP 1 -->
+      <div class="sec-head" id="build"><span class="num">1</span><h2>Choose your platters</h2></div>
+      <p class="sec-sub">Every platter is 10 sandwiches, cut in half and labeled. Add as many as you need.</p>
+
+      <div class="types">
+        <div class="type-card">
+          <h3>Sandwich Platter</h3>
+          <p class="price" id="price-sandwich">$135</p>
+          <span class="pp" id="pp-sandwich">$13.50 per person · serves 10</span>
+          <ul>
+            <li>10 signature sandwiches, any mix</li>
+            <li>Cut in half, labeled, and arranged on a platter</li>
+            <li>Plates, napkins &amp; utensils on request</li>
+          </ul>
+          <button type="button" class="btn btn-wine" data-action="add" data-type="sandwich">+ Add sandwich platter</button>
+        </div>
+        <div class="type-card combo">
+          <h3>Combo Platter <span class="badge">Most popular</span></h3>
+          <p class="price" id="price-combo">$185</p>
+          <span class="pp" id="pp-combo">$18.50 per person · serves 10</span>
+          <ul>
+            <li>10 signature sandwiches, any mix</li>
+            <li>10 bags of Torres chips, choose the flavors</li>
+            <li>10 cold drinks: lemonade, iced tea, Coke, Diet Coke or water</li>
+          </ul>
+          <button type="button" class="btn btn-silver" data-action="add" data-type="combo">+ Add combo platter</button>
+        </div>
+      </div>
+
+      <div class="platters" id="platters" aria-live="polite"></div>
+
+      <div class="card" style="margin-top:18px" id="extras-card">
+        <div class="sub-head" style="margin-top:0"><h4>Extra chips &amp; drinks <span class="hint" style="text-transform:none;letter-spacing:0;font-family:var(--f-body);font-size:15px;color:var(--muted)">(optional, $3 each)</span></h4></div>
+        <div id="extras"></div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="sec-head" id="when"><span class="num">2</span><h2>Pickup or delivery</h2></div>
+      <p class="sec-sub">Pick up at our South End shop, or we'll deliver nearby.</p>
+      <div class="card">
+        <div class="fulfil" role="radiogroup" aria-label="Pickup or delivery">
+          <label><input type="radio" name="fulfillment" value="pickup" checked><div><b>Pickup</b><span>682A Tremont St, Boston · Free</span></div></label>
+          <label><input type="radio" name="fulfillment" value="delivery"><div><b>Delivery</b><span id="deliv-desc">Within 3 miles · $20, free on 3+ platters</span></div></label>
+        </div>
+
+        <div class="notice" id="lead-notice">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <div id="lead-text"></div>
+        </div>
+
+        <div class="fields">
+          <div class="field" id="f-date">
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date">
+            <div class="err">Choose a date.</div>
+          </div>
+          <div class="field" id="f-time">
+            <label for="time"><span id="time-label">Pickup time</span></label>
+            <select id="time" name="time"><option value="">Select a date first</option></select>
+            <div class="err">Choose a time.</div>
+          </div>
+        </div>
+
+        <div id="delivery-fields" hidden>
+          <div class="fields" style="margin-top:14px">
+            <div class="field full" id="f-street">
+              <label for="street">Delivery address</label>
+              <input type="text" id="street" name="street" autocomplete="street-address" placeholder="Street address">
+              <div class="err">Enter a delivery address.</div>
+            </div>
+            <div class="field">
+              <label for="unit">Suite / floor <span class="hint">(optional)</span></label>
+              <input type="text" id="unit" name="unit" placeholder="e.g. 4th floor, Suite 400">
+            </div>
+            <div class="field" id="f-zip">
+              <label for="zip">ZIP code</label>
+              <input type="text" id="zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="02118">
+              <div class="err">Enter a 5-digit ZIP.</div>
+            </div>
+            <div class="field full">
+              <label for="dnotes">Delivery instructions <span class="hint">(optional)</span></label>
+              <input type="text" id="dnotes" name="dnotes" placeholder="Front desk, loading dock, who to ask for…">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="sec-head" id="details"><span class="num">3</span><h2>Your details</h2></div>
+      <p class="sec-sub">So we can confirm your order and send the invoice.</p>
+      <div class="card">
+        <div class="fields">
+          <div class="field" id="f-first"><label for="first">First name</label><input type="text" id="first" autocomplete="given-name"><div class="err">Enter your first name.</div></div>
+          <div class="field" id="f-last"><label for="last">Last name</label><input type="text" id="last" autocomplete="family-name"><div class="err">Enter your last name.</div></div>
+          <div class="field" id="f-email"><label for="email">Email</label><input type="email" id="email" autocomplete="email"><div class="err">Enter a valid email.</div></div>
+          <div class="field" id="f-phone"><label for="phone">Phone</label><input type="tel" id="phone" autocomplete="tel" placeholder="(617) 555-0123"><div class="err">Enter a phone number we can reach on the day.</div></div>
+          <div class="field"><label for="company">Company / event <span class="hint">(optional)</span></label><input type="text" id="company" autocomplete="organization"></div>
+          <div class="field"><label for="headcount">Number of guests <span class="hint">(optional)</span></label><input type="number" id="headcount" min="1" inputmode="numeric" placeholder="e.g. 25"></div>
+          <div class="field full">
+            <span class="lbl">Extras <span class="hint">(no charge)</span></span>
+            <div class="checks">
+              <label><input type="checkbox" id="utensils" checked> Plates, napkins &amp; utensils</label>
+              <label><input type="checkbox" id="sauce-side"> Pack sauces on the side for hot sandwiches (keeps the bread crisp)</label>
+            </div>
+          </div>
+          <div class="field full"><label for="notes">Allergies or special requests <span class="hint">(optional)</span></label><textarea id="notes" placeholder="Nut allergy in the group, swap arugula for lettuce on the South End, etc."></textarea></div>
+        </div>
+      </div>
+    </form>
+
+    <aside aria-label="Order summary" id="summary-wrap">
+      <div class="summary" id="summary">
+        <h3>Your Order</h3>
+        <div id="sum-body"></div>
+        <button type="button" class="btn btn-silver" id="submit">Send order request</button>
+        <div id="missing"></div>
+        <p class="sum-note">No payment now. We'll confirm availability and email an invoice.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<section class="faq">
+  <div class="wrap">
+    <h2>Good to Know</h2>
+    <div class="faq-grid">
+      <details><summary>How much notice do you need?</summary><p>24 hours for orders of up to 20 sandwiches (1–2 platters). 48 hours for 30 or more. Need it sooner? Email us and we'll do our best.</p></details>
+      <details><summary>How many platters should I order?</summary><p>Plan on one sandwich per person for lunch. Each sandwich is cut in half, so a platter of 10 also works for about 15–20 people as part of a larger spread.</p></details>
+      <details><summary>Can I change or cancel my order?</summary><p>Yes. Changes and full-refund cancellations are accepted up to 24 hours before your pickup or delivery time.</p></details>
+      <details><summary>Do you have vegetarian options?</summary><p>Yes. The Sicilian Stack (eggplant caprese) and The Amalfi (lemon ricotta and pear) are both vegetarian. Look for the <span class="tag veg">Veg</span> tag.</p></details>
+      <details><summary>Allergies and gluten-free?</summary><p>Some sandwiches contain walnuts, dairy, fish and gluten. Tell us about allergies in the order notes. We don't offer gluten-free bread right now because we can't guarantee no cross-contact in our kitchen.</p></details>
+      <details><summary>Where do you deliver?</summary><p>Within about 3 miles of the shop: South End, Back Bay, Downtown, the Financial District, Seaport, Fenway and more. Further out? Ask us and we'll see what we can do.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <span class="wordmark">CALISTO'S</span><br>
+  682A Tremont St · Boston, MA · <a href="mailto:owner@calistosdeli.com" style="color:#e5e4e2">owner@calistosdeli.com</a>
+</footer>
+
+<div class="mbar" id="mbar">
+  <div class="t"><span id="mbar-count">No platters yet</span><b id="mbar-total">$0.00</b></div>
+  <a href="#summary-wrap" class="btn btn-silver">Review order</a>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box">
+    <h2 id="modal-title">Grazie!</h2>
+    <p class="ref" id="modal-ref"></p>
+    <p>We've got your request. We'll confirm by email within a few hours, with an invoice to pay online.</p>
+    <pre id="modal-text"></pre>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-wine" id="modal-close">Done</button>
+      <button type="button" class="btn btn-ghost" onclick="window.print()">Print</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==================================================================
+   CONFIG: edit prices, menu and hours here
+   ================================================================== */
+const CONFIG = {
+  platterSize: 10,
+  price: { sandwich: 135, combo: 185 },   // per platter
+  extraPrice: 3,                           // extra chip bag or drink
+  deliveryFee: 20, freeDeliveryPlatters: 3,
+  taxRate: 0.07,                           // MA 6.25% + Boston 0.75% local meals tax
+  leadHours: { small: 24, large: 48 }, smallMaxSandwiches: 20,
+  slots: { start: '08:00', end: '15:00', stepMin: 30 },  // catering pickup/delivery window
+  closedDays: [],                          // 0 = Sunday … 6 = Saturday
+  email: 'owner@calistosdeli.com',
+};
+
+const SANDWICHES = [
+  { id:'calisto',   group:'Cold Bar', name:'The Calisto',       tags:[],          desc:'Mortadella, salami, soppressata, provolone, lettuce, tomato, onion, banana peppers, hots, oil & vinegar, Italian sub roll' },
+  { id:'calabria',  group:'Cold Bar', name:'The Calabria',      tags:['hot'],     desc:'Prosciutto, spicy soppressata, hot capicola, sharp provolone, Calabrian chili aioli, shaved fennel, banana peppers, arugula, ciabatta' },
+  { id:'southend',  group:'Cold Bar', name:'The South End',     tags:[],          desc:'Turkey, bacon, whipped brie, fig jam, pickled red onion, tomato, arugula, green apple & fennel slaw, baguette' },
+  { id:'ligurian',  group:'Cold Bar', name:'The Ligurian',      tags:[],          desc:'Premium tinned tuna in lemon olive oil mayo, pickled red onion, lettuce, paprika Torres chips, Italian sub roll' },
+  { id:'romangold', group:'From the Griddle', name:'The Roman Gold', tags:[],     desc:'Herbed chicken cutlet, crispy prosciutto, fresh mozzarella, tomato, Calabrian chili, pesto, walnut, arugula, hot honey, ciabatta' },
+  { id:'midnight',  group:'From the Griddle', name:'After Midnight', tags:['hot'], desc:'Crispy chicken cutlet, vodka sauce, burrata, whole basil, chili oil, Italian sub roll' },
+  { id:'tremont',   group:'From the Griddle', name:'The Tremont',    tags:[],      desc:'Warm roast beef, white cheddar, balsamic onion jam, arugula, horseradish-garlic aioli, ciabatta' },
+  { id:'sicilian',  group:'From the Griddle', name:'The Sicilian Stack', tags:['veg'], desc:'Panko eggplant cutlets, fresh mozzarella, tomato, basil, Calabrian chili, pesto, balsamic glaze, ciabatta' },
+  { id:'nordic',    group:'Morning Meetings', name:'The Nordic',  tags:['am'],     desc:'Smoked salmon, cucumber, pickled red onion, lemon caper dill cream cheese, tomato, arugula, everything bagel' },
+  { id:'amalfi',    group:'Morning Meetings', name:'The Amalfi',  tags:['veg','am'], desc:'Lemon-whipped ricotta, fresh pear, cucumber, walnuts, avocado, scallions, hot honey, black pepper, baguette' },
+];
+const CHIPS = [
+  { id:'selecta',  name:'Torres Selecta (Sea Salt)' },
+  { id:'paprika',  name:'Torres Smoked Paprika' },
+  { id:'truffle',  name:'Torres Black Truffle' },
+];
+const DRINKS = [
+  { id:'lemonade', name:'Lemonade' },
+  { id:'icedtea',  name:'Iced Tea' },
+  { id:'coke',     name:'Coke' },
+  { id:'dietcoke', name:'Diet Coke' },
+  { id:'water',    name:'Water' },
+];
+const PRESETS = {
+  "Chef's Mix (one of each)": () => Object.fromEntries(SANDWICHES.map(s => [s.id, 1])),
+  'Italian Classics':  () => ({ calisto:4, calabria:3, romangold:3 }),
+  'Crowd Pleasers':    () => ({ calisto:2, southend:2, romangold:2, tremont:2, sicilian:2 }),
+  'Vegetarian':        () => ({ sicilian:5, amalfi:5 }),
+};
+const TAG_LABEL = { veg:'Veg', hot:'Spicy', am:'Morning' };
+
+/* ==================================================================
+   State
+   ================================================================== */
+const N = CONFIG.platterSize;
+let uid = 0;
+const state = { platters: [], extras: { chips:{}, drinks:{} } };
+
+function evenSplit(list, total){
+  const out = {}; list.forEach((x,i) => out[x.id] = Math.floor(total/list.length) + (i < total % list.length ? 1 : 0)); return out;
+}
+function newPlatter(type){
+  return { id: ++uid, type, label:'', open:true, sandwiches:{},
+           chips: evenSplit(CHIPS, N), drinks: evenSplit(DRINKS, N) };
+}
+const sum = o => Object.values(o).reduce((a,b) => a + (b||0), 0);
+const money = n => '$' + n.toFixed(2);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isComplete = p => sum(p.sandwiches) === N && (p.type === 'sandwich' || (sum(p.chips) === N && sum(p.drinks) === N));
+const $ = id => document.getElementById(id);
+
+/* ==================================================================
+   Rendering: platters
+   ================================================================== */
+function stepper(scope, pid, key, val, canAdd, label){
+  return `<span class="stepper${val ? ' on' : ''}">
+    <button type="button" data-action="dec" data-scope="${scope}" data-pid="${pid}" data-key="${key}" ${val ? '' : 'disabled'} aria-label="Remove one ${esc(label)}">−</button>
+    <output aria-label="${esc(label)} quantity">${val}</output>
+    <button type="button" data-action="inc" data-scope="${scope}" data-pid="${pid}" data-key="${key}" ${canAdd ? '' : 'disabled'} aria-label="Add one ${esc(label)}">+</button>
+  </span>`;
+}
+function meter(n){
+  return `<span class="meter${n === N ? ' full' : ''}"><span class="bar"><i style="width:${n / N * 100}%"></i></span>${n} of ${N}${n === N ? ' ✓' : ''}</span>`;
+}
+function platterHTML(p, idx){
+  const sCount = sum(p.sandwiches), done = isComplete(p);
+  const statusTxt = done ? '✓ Ready' : (sCount < N ? `Choose ${N - sCount} more sandwich${N - sCount === 1 ? '' : 'es'}` : 'Finish chips & drinks');
+  let html = `<article class="platter${done ? ' is-complete' : ''}" id="platter-${p.id}">
+    <div class="p-head">
+      <span class="title">Platter ${idx + 1}</span>
+      <span class="ptype">${p.type === 'combo' ? 'Combo' : 'Sandwich'} · ${money(CONFIG.price[p.type])}</span>
+      <span class="status ${done ? 'ok' : 'todo'}">${statusTxt}</span>
+      <span class="p-tools">
+        <button type="button" class="icon-btn" data-action="toggle" data-pid="${p.id}" aria-expanded="${p.open}">${p.open ? 'Collapse' : 'Edit'}</button>
+        <button type="button" class="icon-btn" data-action="dup" data-pid="${p.id}" title="Duplicate this platter">Duplicate</button>
+        <button type="button" class="icon-btn" data-action="remove" data-pid="${p.id}" aria-label="Remove platter ${idx + 1}">Remove</button>
+      </span>
+    </div>`;
+  if (!p.open){
+    const list = SANDWICHES.filter(s => p.sandwiches[s.id]).map(s => `${p.sandwiches[s.id]}× ${s.name.replace(/^The /,'')}`).join(', ');
+    return html + `<div class="p-body" style="padding-top:12px;padding-bottom:12px;font-size:16px;color:var(--muted)">${list || 'No sandwiches chosen yet.'}</div></article>`;
+  }
+  html += `<div class="p-body">
+    <div class="p-row">
+      <span class="seg" role="group" aria-label="Platter type">
+        <button type="button" data-action="type" data-type="sandwich" data-pid="${p.id}" aria-pressed="${p.type === 'sandwich'}">Sandwich only</button>
+        <button type="button" data-action="type" data-type="combo" data-pid="${p.id}" aria-pressed="${p.type === 'combo'}">Combo + chips &amp; drinks</button>
+      </span>
+      <span class="label-input"><label class="sr-only" for="label-${p.id}">Platter label</label><input type="text" id="label-${p.id}" data-label="${p.id}" value="${esc(p.label)}" placeholder="Label it (optional), e.g. “Sales team”"></span>
+    </div>
+    <div class="sub-head"><h4>Sandwiches</h4>${meter(sCount)}</div>
+    <div class="quick">${Object.keys(PRESETS).map(k => `<button type="button" class="chip-btn" data-action="preset" data-pid="${p.id}" data-preset="${esc(k)}">${esc(k)}</button>`).join('')}
+      ${sCount ? `<button type="button" class="chip-btn" data-action="clear" data-pid="${p.id}">Clear</button>` : ''}</div>`;
+  let group = '';
+  html += SANDWICHES.map(s => {
+    let g = '';
+    if (s.group !== group){ g = (group ? '</ul>' : '') + `<div class="group-label">${s.group}</div><ul class="items">`; group = s.group; }
+    const v = p.sandwiches[s.id] || 0;
+    return g + `<li class="item${v ? ' has' : ''}"><div><div class="name">${s.name}${s.tags.map(t => `<span class="tag ${t}">${TAG_LABEL[t]}</span>`).join('')}</div><div class="desc">${s.desc}</div></div>
+      ${stepper('sandwiches', p.id, s.id, v, sCount < N, s.name)}</li>`;
+  }).join('') + '</ul>';
+  if (p.type === 'combo'){
+    const c = sum(p.chips), d = sum(p.drinks);
+    html += `<div class="sub-head"><h4>Torres chips</h4>${meter(c)}</div>
+      <div class="quick"><button type="button" class="chip-btn" data-action="even" data-scope="chips" data-pid="${p.id}">Even mix</button>${CHIPS.map(x => `<button type="button" class="chip-btn" data-action="all" data-scope="chips" data-key="${x.id}" data-pid="${p.id}">All ${x.name.replace('Torres ','')}</button>`).join('')}</div>
+      <div class="mini-grid">${CHIPS.map(x => `<div class="mini"><span class="name">${x.name}</span>${stepper('chips', p.id, x.id, p.chips[x.id] || 0, c < N, x.name)}</div>`).join('')}</div>
+      <div class="sub-head"><h4>Drinks</h4>${meter(d)}</div>
+      <div class="quick"><button type="button" class="chip-btn" data-action="even" data-scope="drinks" data-pid="${p.id}">Even mix</button>${DRINKS.map(x => `<button type="button" class="chip-btn" data-action="all" data-scope="drinks" data-key="${x.id}" data-pid="${p.id}">All ${x.name}</button>`).join('')}</div>
+      <div class="mini-grid">${DRINKS.map(x => `<div class="mini"><span class="name">${x.name}</span>${stepper('drinks', p.id, x.id, p.drinks[x.id] || 0, d < N, x.name)}</div>`).join('')}</div>`;
+  }
+  return html + '</div></article>';
+}
+function renderPlatters(){
+  const el = $('platters');
+  if (!state.platters.length){
+    el.innerHTML = `<div class="empty">No platters yet. Add a <b>Sandwich</b> or <b>Combo</b> platter above to get started.</div>`;
+  } else {
+    el.innerHTML = state.platters.map(platterHTML).join('') +
+      `<div class="add-row"><button type="button" class="btn btn-ghost" data-action="add" data-type="sandwich">+ Another sandwich platter</button><button type="button" class="btn btn-wine" data-action="add" data-type="combo">+ Another combo platter</button></div>`;
+  }
+}
+function renderExtras(){
+  const row = (list, scope) => list.map(x => `<div class="mini"><span class="name">${x.name}</span>${stepper('x-' + scope, 0, x.id, state.extras[scope][x.id] || 0, true, x.name)}</div>`).join('');
+  $('extras').innerHTML = `<div class="group-label" style="margin-top:0">Chips</div><div class="mini-grid">${row(CHIPS,'chips')}</div>
+    <div class="group-label">Drinks</div><div class="mini-grid">${row(DRINKS,'drinks')}</div>`;
+}
+
+/* ==================================================================
+   Pricing, lead time and scheduling
+   ================================================================== */
+function totals(){
+  const platters = state.platters.reduce((a,p) => a + CONFIG.price[p.type], 0);
+  const extrasQty = sum(state.extras.chips) + sum(state.extras.drinks);
+  const extras = extrasQty * CONFIG.extraPrice;
+  const sub = platters + extras;
+  const delivery = fulfillment() === 'delivery' && state.platters.length
+    ? (state.platters.length >= CONFIG.freeDeliveryPlatters ? 0 : CONFIG.deliveryFee) : 0;
+  const tax = Math.round(sub * CONFIG.taxRate * 100) / 100;
+  return { platters, extras, extrasQty, sub, delivery, tax, total: sub + delivery + tax };
+}
+const fulfillment = () => document.querySelector('input[name=fulfillment]:checked').value;
+const sandwichCount = () => state.platters.length * N;
+const leadHours = () => sandwichCount() > CONFIG.smallMaxSandwiches ? CONFIG.leadHours.large : CONFIG.leadHours.small;
+const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60 + m; };
+const fmtTime = min => { const h = Math.floor(min/60), m = min%60; return `${(h+11)%12+1}:${String(m).padStart(2,'0')} ${h < 12 ? 'AM' : 'PM'}`; };
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const parseYmd = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+const fmtDate = d => d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+
+function earliest(){ return new Date(Date.now() + leadHours() * 3600e3); }
+function slotsFor(dateStr){
+  const day = parseYmd(dateStr), out = [];
+  if (CONFIG.closedDays.includes(day.getDay())) return out;
+  const min = earliest();
+  for (let t = toMin(CONFIG.slots.start); t <= toMin(CONFIG.slots.end); t += CONFIG.slots.stepMin){
+    const at = new Date(day); at.setHours(Math.floor(t/60), t%60, 0, 0);
+    if (at >= min) out.push(t);
+  }
+  return out;
+}
+function firstAvailable(){
+  const d = new Date(earliest()); d.setHours(0,0,0,0);
+  for (let i = 0; i < 30; i++){ const s = ymd(d); const sl = slotsFor(s); if (sl.length) return { date:s, time:sl[0] }; d.setDate(d.getDate()+1); }
+  return null;
+}
+function renderSchedule(){
+  const first = firstAvailable(), dateEl = $('date'), timeEl = $('time');
+  dateEl.min = first.date;
+  const max = new Date(); max.setDate(max.getDate() + 90); dateEl.max = ymd(max);
+  const n = sandwichCount();
+  const hrs = leadHours();
+  const firstTxt = `${fmtDate(parseYmd(first.date))} at ${fmtTime(first.time)}`;
+  let msg = n
+    ? `Your order has <b>${n} sandwiches</b>, so we need <b>${hrs} hours' notice</b>. Earliest available: <b>${firstTxt}</b>.`
+    : `We need <b>24 hours' notice</b> for up to 20 sandwiches and <b>48 hours</b> for larger orders.`;
+  let warn = false;
+  if (dateEl.value && dateEl.value < first.date){
+    msg = `Larger orders need ${hrs} hours' notice, so the date you picked is too soon. The earliest available is <b>${firstTxt}</b>.`;
+    warn = true; dateEl.value = '';
+  }
+  if (!warn && !($('date').value === first.date && $('time').value === String(first.time)))
+    msg += ` <button type="button" class="link-btn" id="use-earliest">Use this time</button>`;
+  $('lead-text').innerHTML = msg;
+  const ue = $('use-earliest');
+  if (ue) ue.onclick = () => { dateEl.value = first.date; renderSchedule(); timeEl.value = String(first.time); renderSchedule(); renderSummary(); renderMissing(); save(); };
+  $('lead-notice').classList.toggle('warn', warn);
+
+  const prev = timeEl.value;
+  if (!dateEl.value){ timeEl.innerHTML = '<option value="">Select a date first</option>'; return; }
+  const slots = slotsFor(dateEl.value);
+  if (!slots.length){ timeEl.innerHTML = '<option value="">No times available, try another day</option>'; return; }
+  timeEl.innerHTML = '<option value="">Select a time</option>' + slots.map(t => `<option value="${t}">${fmtTime(t)}</option>`).join('');
+  if (prev && slots.includes(Number(prev))) timeEl.value = prev;
+}
+
+/* ==================================================================
+   Summary
+   ================================================================== */
+function describe(p){
+  const parts = SANDWICHES.filter(s => p.sandwiches[s.id]).map(s => `${p.sandwiches[s.id]} ${s.name.replace(/^The /,'')}`);
+  let txt = parts.length ? parts.join(', ') : 'Sandwiches not chosen yet';
+  if (p.type === 'combo'){
+    txt += ' · Chips: ' + CHIPS.filter(x => p.chips[x.id]).map(x => `${p.chips[x.id]} ${x.name.replace('Torres ','')}`).join(', ');
+    txt += ' · Drinks: ' + DRINKS.filter(x => p.drinks[x.id]).map(x => `${p.drinks[x.id]} ${x.name}`).join(', ');
+  }
+  return txt;
+}
+function renderSummary(){
+  const t = totals(), f = fulfillment();
+  let h = '';
+  if (!state.platters.length) h += `<p class="sum-empty">Add a platter to get started.</p>`;
+  else h += '<ul class="sum-lines">' + state.platters.map((p,i) => `<li><span>Platter ${i+1} · ${p.type === 'combo' ? 'Combo' : 'Sandwich'}${p.label ? ` <i>(${esc(p.label)})</i>` : ''}<span class="detail">${esc(describe(p))}</span></span><span>${money(CONFIG.price[p.type])}</span></li>`).join('')
+    + (t.extrasQty ? `<li><span>Extra chips &amp; drinks<span class="detail">${t.extrasQty} × ${money(CONFIG.extraPrice)}</span></span><span>${money(t.extras)}</span></li>` : '') + '</ul>';
+  h += `<div class="totals">
+    <div><span>Subtotal</span><span>${money(t.sub)}</span></div>
+    ${f === 'delivery' ? `<div><span>Delivery</span><span class="${t.delivery ? '' : 'free'}">${state.platters.length && !t.delivery ? 'Free' : money(t.delivery)}</span></div>` : ''}
+    <div><span>Meals tax (7%)</span><span>${money(t.tax)}</span></div>
+    <div class="grand"><span>Total</span><span>${money(t.total)}</span></div>
+  </div>`;
+  const date = $('date').value, time = $('time').value;
+  const hc = Number($('headcount').value);
+  h += `<div class="sum-meta">
+    <span><b>${state.platters.length}</b> platter${state.platters.length === 1 ? '' : 's'} · <b>${sandwichCount()}</b> sandwiches${hc && state.platters.length ? ` · ~${money(t.total / hc)} per guest` : ''}</span>
+    <span>${f === 'delivery' ? 'Delivery' : 'Pickup'}${date ? ` · ${fmtDate(parseYmd(date))}` : ''}${time ? ` at ${fmtTime(Number(time))}` : ''}</span>
+    ${f === 'delivery' && state.platters.length && state.platters.length < CONFIG.freeDeliveryPlatters ? `<span style="color:var(--sage)">Add ${CONFIG.freeDeliveryPlatters - state.platters.length} more platter${CONFIG.freeDeliveryPlatters - state.platters.length === 1 ? '' : 's'} for free delivery</span>` : ''}
+  </div>`;
+  $('sum-body').innerHTML = h;
+  $('mbar-count').textContent = state.platters.length ? `${state.platters.length} platter${state.platters.length === 1 ? '' : 's'} · ${sandwichCount()} sandwiches` : 'No platters yet';
+  $('mbar-total').textContent = money(t.total);
+}
+
+/* ==================================================================
+   Validation & submit
+   ================================================================== */
+function problems(){
+  const out = [];
+  if (!state.platters.length) out.push(['Add at least one platter', 'build']);
+  state.platters.forEach((p,i) => {
+    const s = sum(p.sandwiches);
+    if (s !== N) out.push([`Platter ${i+1}: choose ${N - s} more sandwich${N - s === 1 ? '' : 'es'}`, `platter-${p.id}`]);
+    if (p.type === 'combo' && sum(p.chips) !== N) out.push([`Platter ${i+1}: choose ${N - sum(p.chips)} more chips`, `platter-${p.id}`]);
+    if (p.type === 'combo' && sum(p.drinks) !== N) out.push([`Platter ${i+1}: choose ${N - sum(p.drinks)} more drinks`, `platter-${p.id}`]);
+  });
+  const checks = [
+    ['f-date', !$('date').value, 'Pick a date'],
+    ['f-time', !$('time').value, 'Pick a time'],
+  ];
+  if (fulfillment() === 'delivery'){
+    checks.push(['f-street', !$('street').value.trim(), 'Add a delivery address']);
+    checks.push(['f-zip', !/^\d{5}$/.test($('zip').value.trim()), 'Add a delivery ZIP code']);
+  }
+  checks.push(['f-first', !$('first').value.trim(), 'Add your first name']);
+  checks.push(['f-last', !$('last').value.trim(), 'Add your last name']);
+  checks.push(['f-email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('email').value.trim()), 'Add a valid email']);
+  checks.push(['f-phone', $('phone').value.replace(/\D/g,'').length < 10, 'Add a phone number']);
+  checks.forEach(([id, bad, msg]) => { if (bad) out.push([msg, id]); });
+  return out;
+}
+let triedSubmit = false;
+function renderMissing(){
+  const list = problems();
+  document.querySelectorAll('.field.invalid').forEach(f => f.classList.remove('invalid'));
+  if (!triedSubmit){ $('missing').innerHTML = ''; return list; }
+  list.forEach(([,id]) => { const el = $(id); if (el && el.classList.contains('field')) el.classList.add('invalid'); });
+  $('missing').innerHTML = list.length ? `<div class="missing" role="alert"><b>Almost there.</b> Still needed:<ul>${list.map(([m,id]) => `<li><a href="#${id}">${esc(m)}</a></li>`).join('')}</ul></div>` : '';
+  return list;
+}
+function orderText(ref){
+  const t = totals(), f = fulfillment(), L = [];
+  L.push(`CALISTO'S CATERING REQUEST ${ref}`, '');
+  L.push(`${f === 'delivery' ? 'DELIVERY' : 'PICKUP'}: ${fmtDate(parseYmd($('date').value))} at ${fmtTime(Number($('time').value))}`);
+  if (f === 'delivery') L.push(`Address: ${$('street').value.trim()}${$('unit').value.trim() ? ', ' + $('unit').value.trim() : ''}, ${$('zip').value.trim()}`, ...( $('dnotes').value.trim() ? [`Instructions: ${$('dnotes').value.trim()}`] : []));
+  L.push('', `Name: ${$('first').value.trim()} ${$('last').value.trim()}`, `Email: ${$('email').value.trim()}`, `Phone: ${$('phone').value.trim()}`);
+  if ($('company').value.trim()) L.push(`Company/event: ${$('company').value.trim()}`);
+  if ($('headcount').value) L.push(`Guests: ${$('headcount').value}`);
+  L.push('');
+  state.platters.forEach((p,i) => {
+    L.push(`Platter ${i+1}: ${p.type === 'combo' ? 'Combo' : 'Sandwich'}${p.label ? ` (${p.label})` : ''} ${money(CONFIG.price[p.type])}`);
+    SANDWICHES.filter(s => p.sandwiches[s.id]).forEach(s => L.push(`   ${p.sandwiches[s.id]} × ${s.name}`));
+    if (p.type === 'combo'){
+      L.push('   Chips: ' + CHIPS.filter(x => p.chips[x.id]).map(x => `${p.chips[x.id]} ${x.name}`).join(', '));
+      L.push('   Drinks: ' + DRINKS.filter(x => p.drinks[x.id]).map(x => `${p.drinks[x.id]} ${x.name}`).join(', '));
+    }
+  });
+  if (t.extrasQty){
+    L.push('Extras: ' + [...CHIPS.filter(x => state.extras.chips[x.id]).map(x => `${state.extras.chips[x.id]} ${x.name}`),
+                         ...DRINKS.filter(x => state.extras.drinks[x.id]).map(x => `${state.extras.drinks[x.id]} ${x.name}`)].join(', ') + ` ${money(t.extras)}`);
+  }
+  L.push('', `Plates/napkins/utensils: ${$('utensils').checked ? 'Yes' : 'No'}`, `Sauces on the side: ${$('sauce-side').checked ? 'Yes' : 'No'}`);
+  if ($('notes').value.trim()) L.push(`Notes: ${$('notes').value.trim()}`);
+  L.push('', `Subtotal ${money(t.sub)}`);
+  if (f === 'delivery') L.push(`Delivery ${t.delivery ? money(t.delivery) : 'Free'}`);
+  L.push(`Tax ${money(t.tax)}`, `TOTAL ${money(t.total)}`);
+  return L.join('\n');
+}
+function submit(){
+  triedSubmit = true;
+  const list = renderMissing();
+  if (list.length){
+    const target = $(list[0][1]);
+    if (target) target.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+  const ref = 'CAT-' + Date.now().toString(36).toUpperCase().slice(-6);
+  const text = orderText(ref);
+  // DRAFT: in the live version this is where the order gets sent (Wix form / email automation).
+  $('modal-ref').textContent = 'Request ' + ref;
+  $('modal-text').textContent = text;
+  $('modal').classList.add('open');
+  $('modal-close').focus();
+}
+
+/* ==================================================================
+   Events
+   ================================================================== */
+function findPlatter(id){ return state.platters.find(p => p.id === Number(id)); }
+function update(){ renderPlatters(); renderSchedule(); renderSummary(); renderMissing(); save(); }
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-action]'); if (!b) return;
+  const { action, pid, scope, key, type } = b.dataset;
+  const p = findPlatter(pid);
+  switch (action){
+    case 'add': {
+      state.platters.forEach(x => { if (isComplete(x)) x.open = false; });
+      const np = newPlatter(type); state.platters.push(np); update();
+      $('platter-' + np.id).scrollIntoView({ behavior:'smooth', block:'start' });
+      return;
+    }
+    case 'remove': state.platters = state.platters.filter(x => x !== p); break;
+    case 'dup': { const c = JSON.parse(JSON.stringify(p)); c.id = ++uid; c.open = true; p.open = false; state.platters.splice(state.platters.indexOf(p)+1, 0, c); break; }
+    case 'toggle': p.open = !p.open; break;
+    case 'type': p.type = type; break;
+    case 'preset': p.sandwiches = PRESETS[b.dataset.preset](); break;
+    case 'clear': p.sandwiches = {}; break;
+    case 'even': p[scope] = evenSplit(scope === 'chips' ? CHIPS : DRINKS, N); break;
+    case 'all': p[scope] = { [key]: N }; break;
+    case 'inc': case 'dec': {
+      const d = action === 'inc' ? 1 : -1;
+      if (scope.startsWith('x-')){ const s = scope.slice(2); state.extras[s][key] = Math.max(0, (state.extras[s][key]||0) + d); renderExtras(); renderSummary(); save(); return; }
+      const bag = p[scope]; const next = (bag[key]||0) + d;
+      if (next < 0 || (d > 0 && sum(bag) >= N)) return;
+      bag[key] = next;
+      // keep focus on the same stepper after re-render
+      update();
+      const sel = `[data-action="${action}"][data-scope="${scope}"][data-pid="${pid}"][data-key="${key}"]`;
+      const again = document.querySelector(sel);
+      (again && !again.disabled ? again : document.querySelector(`[data-action="dec"][data-scope="${scope}"][data-pid="${pid}"][data-key="${key}"]`))?.focus();
+      return;
+    }
+    default: return;
+  }
+  update();
+});
+document.addEventListener('input', e => {
+  if (e.target.dataset.label){ findPlatter(e.target.dataset.label).label = e.target.value; renderSummary(); save(); return; }
+  if (e.target.closest('#order')){ if (e.target.id === 'date') renderSchedule(); renderSummary(); renderMissing(); save(); }
+});
+document.addEventListener('change', e => {
+  if (e.target.name === 'fulfillment'){
+    const del = fulfillment() === 'delivery';
+    $('delivery-fields').hidden = !del;
+    $('time-label').textContent = del ? 'Delivery time' : 'Pickup time';
+  }
+  if (e.target.id === 'date') renderSchedule();
+  renderSummary(); renderMissing(); save();
+});
+$('submit').addEventListener('click', submit);
+$('modal-close').addEventListener('click', () => $('modal').classList.remove('open'));
+$('modal').addEventListener('click', e => { if (e.target.id === 'modal') $('modal').classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $('modal').classList.remove('open'); });
+
+/* ==================================================================
+   Save progress in this browser (so a refresh doesn't lose the order)
+   ================================================================== */
+const FIELDS = ['date','street','unit','zip','dnotes','first','last','email','phone','company','headcount','notes'];
+const KEY = 'calistos-catering-draft';
+function save(){
+  try {
+    const f = {}; FIELDS.forEach(id => f[id] = $(id).value);
+    f.time = $('time').value; f.fulfillment = fulfillment(); f.utensils = $('utensils').checked; f.sauce = $('sauce-side').checked;
+    localStorage.setItem(KEY, JSON.stringify({ state, f, uid, at: Date.now() }));
+  } catch (_) {}
+}
+function load(){
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (!raw || Date.now() - raw.at > 7*864e5) return;
+    Object.assign(state, raw.state); uid = raw.uid || 0;
+    FIELDS.forEach(id => { if (raw.f[id] != null) $(id).value = raw.f[id]; });
+    document.querySelector(`input[name=fulfillment][value=${raw.f.fulfillment}]`).checked = true;
+    $('delivery-fields').hidden = raw.f.fulfillment !== 'delivery';
+    $('time-label').textContent = raw.f.fulfillment === 'delivery' ? 'Delivery time' : 'Pickup time';
+    $('utensils').checked = raw.f.utensils; $('sauce-side').checked = raw.f.sauce;
+    renderSchedule(); if (raw.f.time) $('time').value = raw.f.time;
+  } catch (_) {}
+}
+
+/* init */
+$('price-sandwich').textContent = '$' + CONFIG.price.sandwich;
+$('price-combo').textContent = '$' + CONFIG.price.combo;
+$('pp-sandwich').textContent = `${money(CONFIG.price.sandwich / N)} per person · serves ${N}`;
+$('pp-combo').textContent = `${money(CONFIG.price.combo / N)} per person · serves ${N}`;
+load();
+renderPlatters(); renderExtras(); renderSchedule(); renderSummary();
+</script>
+</body>
+</html>
