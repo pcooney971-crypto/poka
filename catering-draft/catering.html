@@ -7,13 +7,16 @@
 <meta name="description" content="Catering platters from Calisto's Deli on Tremont St in Boston's South End. Ten sandwiches per platter, your choice of mix, with chips and drinks if you like. Pickup or delivery.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Grenze+Gotisch:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ---------------------------------------------------------------
    Calisto's palette (Master Rebrand cheat sheet)
    wine = limewash walls, linen = deli paper, silver = fixtures,
    charcoal = stained wood, sage = patina tile, blush = flowers
-   Type: Grenze Gotisch (stand-in for LTC Goudy Text, headlines)
+   Type: Goudy Trojan (headlines and wordmark). It's a licensed font, so the page
+         uses it when installed and falls back to Cinzel, a free Trajan-style
+         capital. To use the real file on the site, add its woff2 to the
+         @font-face rule below.
          Brygada 1918   (stand-in for Rusch Proto Roman, everything else)
 ---------------------------------------------------------------- */
 :root{
@@ -24,9 +27,10 @@
   --sage:#A8C1A0; --sage-ink:#3f5a39;
   --blush:#E1BEBC;
   --rule:#b9a98d; --muted:#6a5059; --error:#8f1d2c;
-  --display:'Grenze Gotisch',Georgia,serif;
+  --display:'Goudy Trojan','Cinzel',Georgia,serif;
   --text:'Brygada 1918',Georgia,'Times New Roman',serif;
 }
+@font-face{font-family:'Goudy Trojan';src:local('Goudy Trojan'),local('LTC Goudy Trojan'),local('GoudyTrojan');font-display:swap}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
@@ -51,7 +55,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* ---------- wall: nav + hero ---------- */
 .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:22px;color:var(--silver)}
-.mark{font-weight:500;font-size:20px;letter-spacing:.32em;text-decoration:none;color:var(--silver)}
+.mark{font-family:var(--display);font-weight:600;font-size:21px;letter-spacing:.24em;text-decoration:none;color:var(--silver)}
 .nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:17px}
 .nav ul a{text-decoration:none;color:var(--silver-dim)}
 .nav ul a:hover{color:var(--silver)}
@@ -60,7 +64,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 .hero{color:var(--silver);padding:56px 0 72px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px 64px;align-items:end}
 @media (max-width:900px){.hero{grid-template-columns:1fr;padding:36px 0 52px}}
-.hero h1{font-family:var(--display);font-weight:600;font-size:clamp(84px,15vw,184px);line-height:.82;margin:0 0 0 -.04em;letter-spacing:-.01em;color:var(--silver)}
+.hero h1{font-family:var(--display);font-weight:500;font-size:clamp(46px,8.6vw,108px);line-height:1;margin:0 0 0 -.03em;letter-spacing:.06em;color:var(--silver)}
 .hero .lede{font-size:21px;line-height:1.5;max-width:30em;margin:22px 0 0;color:#e8dcdf}
 .board-prices{margin:0;padding:0;list-style:none;font-size:20px}
 .board-prices li{display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:1px solid rgba(229,228,226,.22)}
@@ -86,8 +90,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 .step{padding-top:34px}
 .step + .step{margin-top:34px;border-top:1px solid var(--rule)}
 .step-h{display:flex;align-items:baseline;gap:16px;margin:0 0 6px}
-.step-h .n{font-family:var(--display);font-weight:700;font-size:44px;line-height:1;color:var(--wine-ink);min-width:.7em}
-.step-h h2{font-family:var(--display);font-weight:600;font-size:clamp(36px,5vw,48px);line-height:1;margin:0}
+.step-h .n{font-family:var(--display);font-weight:600;font-size:30px;line-height:1;color:var(--wine-ink);min-width:.7em}
+.step-h h2{font-family:var(--display);font-weight:600;font-size:clamp(24px,3.4vw,34px);line-height:1.15;letter-spacing:.04em;margin:0}
 .step-intro{margin:4px 0 22px;color:var(--muted);max-width:36em}
 
 /* ---------- a platter ---------- */
@@ -127,7 +131,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .quick{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 16px;margin:16px 0 4px;font-size:16px}
 .quick > span{color:var(--muted)}
 
-.menu-group{margin:22px 0 2px;font-family:var(--display);font-weight:600;font-size:26px;line-height:1.1;color:var(--wine-ink)}
+.menu-group{margin:22px 0 2px;font-family:var(--display);font-weight:600;font-size:18px;line-height:1.2;letter-spacing:.08em;color:var(--wine-ink)}
 .menu{list-style:none;margin:0;padding:0}
 .menu li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(185,169,141,.55)}
 .menu li:last-child{border-bottom:0}
@@ -204,7 +208,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--wine);outline-of
 .slip{background:var(--linen);color:var(--wine);padding:22px 22px 30px;
   -webkit-mask:linear-gradient(#000 0 0) top/100% calc(100% - 10px) no-repeat,radial-gradient(circle 8px at 8px 0,#000 98%,transparent) bottom/16px 10px repeat-x;
           mask:linear-gradient(#000 0 0) top/100% calc(100% - 10px) no-repeat,radial-gradient(circle 8px at 8px 0,#000 98%,transparent) bottom/16px 10px repeat-x}
-.slip h2{font-family:var(--display);font-weight:600;font-size:38px;line-height:1;margin:0 0 4px}
+.slip h2{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.1;letter-spacing:.06em;margin:0 0 4px}
 .slip .when{font-size:15px;color:var(--muted);margin:0 0 12px;font-style:italic}
 .lines{list-style:none;margin:0;padding:0;font-size:16px}
 .lines li{padding:8px 0;border-bottom:1px dashed rgba(43,8,22,.25)}
@@ -238,7 +242,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--wine);outline-of
 
 /* ---------- questions ---------- */
 .questions{color:var(--silver);padding:12px 0 72px}
-.questions h2{font-family:var(--display);font-weight:600;font-size:clamp(40px,6vw,56px);line-height:1;margin:0 0 20px}
+.questions h2{font-family:var(--display);font-weight:500;font-size:clamp(30px,4.4vw,42px);letter-spacing:.06em;line-height:1;margin:0 0 20px}
 .qa{display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
 @media (max-width:820px){.qa{grid-template-columns:1fr}}
 .qa details{border-top:1px solid rgba(229,228,226,.22);padding:14px 0}
@@ -256,7 +260,7 @@ footer a{color:var(--silver)}
 .modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(26,26,26,.7)}
 .modal.open{display:flex}
 .modal-box{background:var(--paper);max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:28px;border-radius:2px}
-.modal-box h2{font-family:var(--display);font-weight:600;font-size:46px;line-height:1;margin:0}
+.modal-box h2{font-family:var(--display);font-weight:600;font-size:clamp(24px,6vw,32px);letter-spacing:.04em;line-height:1;margin:0}
 .modal-box .ref{color:var(--muted);margin:6px 0 12px}
 .modal-box pre{white-space:pre-wrap;font-family:var(--text);font-size:15px;line-height:1.5;background:var(--paper-hi);border:1px solid var(--rule);padding:14px;max-height:300px;overflow:auto}
 .modal-box .draftnote{font-size:14px;font-style:italic;color:var(--muted)}
